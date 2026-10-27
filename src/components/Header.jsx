@@ -11,7 +11,9 @@ import {
   Languages, 
   User, 
   Briefcase,
-  AlertCircle
+  AlertCircle,
+  LogOut,
+  LogIn
 } from 'lucide-react';
 
 export default function Header() {
@@ -27,6 +29,7 @@ export default function Header() {
     setIsDemoGuideOpen, 
     setTrackingModalOpen,
     activeIndustry,
+    logout,
     t
   } = useApp();
 
@@ -196,6 +199,16 @@ export default function Header() {
             }`}>
               {role === 'worker' ? activeIndustry.worker.avatarInitials : "SO"}
             </div>
+
+            {/* Logout / Switch Account Button */}
+            <button
+              type="button"
+              onClick={logout}
+              className="p-1.5 rounded-lg text-slate-400 hover:text-red-600 hover:bg-slate-100 transition-colors"
+              title="Sign Out / Switch Account"
+            >
+              <LogOut className="w-4 h-4" />
+            </button>
           </div>
         </div>
       </div>

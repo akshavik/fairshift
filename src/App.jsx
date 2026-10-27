@@ -15,10 +15,16 @@ import PayPolicyConfig from './components/admin/PayPolicyConfig';
 import AuditLogRail from './components/admin/AuditLogRail';
 import ReportTrackerModal from './components/worker/ReportTrackerModal';
 import DemoGuideModal from './components/DemoGuideModal';
+import AuthPage from './components/auth/AuthPage';
 import { Smartphone, Monitor } from 'lucide-react';
 
 function MainLayout() {
-  const { role, workerTab, adminTab, viewMode, activeIndustry } = useApp();
+  const { role, workerTab, adminTab, viewMode, activeIndustry, isAuthenticated } = useApp();
+
+  // If not authenticated, show Sign In / Sign Up page
+  if (!isAuthenticated) {
+    return <AuthPage />;
+  }
 
   // Render Worker Content based on active tab
   const renderWorkerContent = () => {

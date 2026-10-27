@@ -15,6 +15,17 @@ export function AppProvider({ children }) {
   const [isDemoGuideOpen, setIsDemoGuideOpen] = useState(false);
   const [trackingModalOpen, setTrackingModalOpen] = useState(false);
   const [trackedReportPin, setTrackedReportPin] = useState('');
+  
+  // Authentication State
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [currentUser, setCurrentUser] = useState({
+    name: "AKSHAVI K",
+    email: "akshavi.k@cmrl-metro.in",
+    phone: "+91 98401 23456",
+    code: "CMRL-W-4089",
+    role: "worker",
+    industry: "construction"
+  });
 
   // Live dynamic state per industry
   const [industryState, setIndustryState] = useState(() => {
@@ -237,6 +248,28 @@ export function AppProvider({ children }) {
     logAudit("PAY_POLICY_UPDATED", `${activeIndustry.name}`, `Daily base wage: ₹${newPayScale.basicRatePerDay}, Overtime multiplier: ${newPayScale.overtimeMultiplier}x`);
   };
 
+  // Authentication Handlers
+  const login = (user) => {
+    setIsAuthenticated(true);
+    setCurrentUser(user);
+    if (user.role) setRole(user.role);
+    if (user.industry) setIndustryKey(user.industry);
+    logAudit("USER_LOGIN", user.name || user.code || "User", `Authenticated as ${user.role} in ${user.industry}`);
+  };
+
+  const signup = (user) => {
+    setIsAuthenticated(true);
+    setCurrentUser(user);
+    if (user.role) setRole(user.role);
+    if (user.industry) setIndustryKey(user.industry);
+    logAudit("USER_REGISTERED", user.name || user.code || "New User", `Account registered as ${user.role} in ${user.industry}`);
+  };
+
+  const logout = () => {
+    setIsAuthenticated(false);
+    logAudit("USER_LOGOUT", currentUser?.name || "User", "Session terminated");
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -258,6 +291,12 @@ export function AppProvider({ children }) {
         setTrackingModalOpen,
         trackedReportPin,
         setTrackedReportPin,
+        isAuthenticated,
+        setIsAuthenticated,
+        currentUser,
+        login,
+        signup,
+        logout,
         activeIndustry,
         activeData,
         reports: activeData.reports,
